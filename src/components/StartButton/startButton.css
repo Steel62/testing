@@ -1,0 +1,18 @@
+
+.startButton{
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 10px;
+    border: 1px #fff solid;
+    border-radius: 5px;
+    background: #22881b;
+    padding: 10px 30px;
+    font-size: 20px;
+    color: white;
+    transition: all 0.5s;
+    font-weight: bold;
+}
+.startButton:hover{
+    background: #2cce25;
+}

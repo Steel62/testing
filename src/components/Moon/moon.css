@@ -1,0 +1,12 @@
+.moon{
+    position: absolute;
+}
+.moon img{
+    width: 50px;
+    animation: rotateMoon 6s linear infinite;
+}
+
+@keyframes rotateMoon {
+    from {transform: rotate(0deg)}
+    to {transform: rotate(360deg)}
+}

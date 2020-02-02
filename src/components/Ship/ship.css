@@ -1,0 +1,16 @@
+.ship{
+    position: absolute;
+    width: 35px;
+    left: 50%;
+    transform: translateX(-50%);
+    transition-property: top;
+    transition-timing-function: linear;
+}
+.ship img{
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.mooveToTop{
+    top: 0;
+}

@@ -1,0 +1,13 @@
+.earth{
+    width: 210px;
+    height: 210px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+}
+.earth img{
+    display: block;
+    height: 100%;
+    width: 100%;
+}
