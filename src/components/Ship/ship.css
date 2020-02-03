@@ -5,6 +5,7 @@
     transform: translateX(-50%);
     transition-property: top;
     transition-timing-function: linear;
+    z-index: 2;
 }
 .ship img{
     display: block;

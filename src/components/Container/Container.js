@@ -4,7 +4,10 @@ import Earth from "../Earth/Earth";
 import Satellite from '../Satellite/Satellite';
 import Ship from "../Ship/Ship";
 import StartButton from "../StartButton/StartButton";
-import Moon from '../Moon/Moon'
+import Moon from '../Moon/Moon';
+import {connect} from "react-redux";
+import setRunGame from '../../actions/RunGame';
+//import mapStateToProps from "react-redux/es/connect/mapStateToProps";
 
 class Container extends React.Component {
     constructor() {
@@ -85,4 +88,10 @@ class Container extends React.Component {
 
 }
 
-export default Container;
+function mapStateToProps(state){
+    return {
+        runGame: state.runGame,
+    }
+}
+
+export default connect(mapStateToProps)(Container);

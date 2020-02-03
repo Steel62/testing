@@ -4,7 +4,7 @@ import './startButton.css';
 class StartButton extends React.Component{
     render() {
         return (
-                <button className='startButton' onClick={this.props.click}>Старт!</button>
+                <button className='startButton' onClick={this.props.click}>Запуск</button>
         );
     }
 }
