@@ -49,14 +49,25 @@ class Satellite extends React.Component{
         //поворот вокруг своей оси
         const rotateSelf = (this.state.clockwise === true) ? this.state.angle : -this.state.angle;
 
+        //ширина и высота дива для орбиты
+        const heightWidth = this.props.radius * 2;
 
         return(
+            <div>
+
             <div className='satellite detectCollapse' style={{
                 left: positionX,
                 top: positionY,
             }}>
                 <img src={icon} alt="" style = {{transform: `rotate(${rotateSelf}deg)`}}/>
             </div>
+                <div className="orbitSatellite" style={{
+                    width: heightWidth,
+                    height: heightWidth
+                }}></div>
+
+            </div>
+
         );
     }
 
