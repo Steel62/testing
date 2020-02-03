@@ -54,18 +54,16 @@ class Satellite extends React.Component{
 
         return(
             <div>
-
-            <div className='satellite detectCollapse' style={{
-                left: positionX,
-                top: positionY,
-            }}>
-                <img src={icon} alt="" style = {{transform: `rotate(${rotateSelf}deg)`}}/>
-            </div>
-                <div className="orbitSatellite" style={{
-                    width: heightWidth,
-                    height: heightWidth
-                }}></div>
-
+                <div className='satellite detectCollapse' style={{
+                    left: positionX,
+                    top: positionY,
+                }}>
+                    <img src={icon} alt="" style = {{transform: `rotate(${rotateSelf}deg)`}}/>
+                </div>
+                    <div className="orbitSatellite" style={{
+                        width: heightWidth,
+                        height: heightWidth
+                    }}></div>
             </div>
 
         );

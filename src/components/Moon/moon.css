@@ -1,9 +1,19 @@
 .moon{
     position: absolute;
+    z-index: 2;
 }
 .moon img{
     width: 50px;
     animation: rotateMoon 6s linear infinite;
+}
+.orbitMoon{
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 50%;
+    border: 1px #6f8bce dashed;
+    z-index: 1;
 }
 
 @keyframes rotateMoon {

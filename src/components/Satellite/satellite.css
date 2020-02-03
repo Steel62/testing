@@ -1,5 +1,6 @@
 .satellite{
     position: absolute;
+    z-index: 2;
 }
 .satellite img{
     width: 30px;
@@ -10,5 +11,6 @@
     top: 50%;
     transform: translateX(-50%) translateY(-50%);
     border-radius: 50%;
-    border: 1px #a6ceb2 dotted;
+    border: 1px #6f8bce dashed;
+    z-index: 1;
 }

@@ -33,8 +33,8 @@ class Moon extends React.Component{
 
     render() {
         //вычисления центра вращения
-        const verticalCenter = document.documentElement.clientHeight / 2 - 21;
-        const gorisontalCenter = document.documentElement.clientWidth / 2 - 15;
+        const verticalCenter = document.documentElement.clientHeight / 2 - 26;
+        const gorisontalCenter = document.documentElement.clientWidth / 2 - 25;
 
         //вычисление координат X и Y
         const angle = this.state.angle * 2 * Math.PI/180;
@@ -46,12 +46,21 @@ class Moon extends React.Component{
             positionY = verticalCenter + this.state.radius*(-Math.sin(angle));
         }
 
+        //ширина и высота дива для орбиты
+        const heightWidth = this.props.radius * 2;
+
         return(
-            <div className='moon detectCollapse' style={{
-                left: positionX,
-                top: positionY,
-            }}>
-                <img src={icon} alt=""/>
+            <div>
+                <div className='moon detectCollapse' style={{
+                    left: positionX,
+                    top: positionY,
+                }}>
+                    <img src={icon} alt=""/>
+                </div>
+                <div className="orbitMoon" style={{
+                    width: heightWidth,
+                    height: heightWidth
+                }}></div>
             </div>
         );
     }
