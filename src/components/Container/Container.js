@@ -19,7 +19,6 @@ class Container extends React.Component {
             moonSpeed: 5,
         }
         this.clickStartButton = this.clickStartButton.bind(this);
-        this.clickStart = this.clickStart.bind(this);
 
 
     }
@@ -44,18 +43,15 @@ class Container extends React.Component {
                 />
                 {satellites}
                 <Moon radius={moonRadius}/>
-                <StartButton click = {this.clickStart}/>
+                <StartButton click = {this.clickStartButton}/>
             </div>
         )
     }
-    clickStart(){
-        this.props.setRunGame(true);
-    }
+
+
+
     clickStartButton(){
-        this.setState(prevState =>{
-            prevState.runGame = true;
-            return prevState;
-        })
+        this.props.setRunGame(true);
 
         const elemShip = document.getElementById('ship');
         const elemForCollapse = document.querySelectorAll('.detectCollapse');
@@ -66,7 +62,7 @@ class Container extends React.Component {
             if (elemShip.offsetTop === 0){
                 clearInterval(timer);
                 alert('Ракета успешно вышла в открытый космос');
-                this.setState(prevState => prevState.runGame = false)
+                this.props.setRunGame(false);
 
             } else {
 
@@ -79,7 +75,7 @@ class Container extends React.Component {
                                 element.offsetTop <= elemShip.offsetTop + elemShip.offsetHeight){
                                 clearInterval(timer);
                                 alert('Произошло столкновение');
-                                this.setState(prevState => prevState.runGame = false)
+                                this.props.setRunGame(false);
                             }
                         }
                     }
