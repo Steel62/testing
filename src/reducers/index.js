@@ -1,5 +1,5 @@
 export const initState = {
-    runGame: false
+    runGame: false,
 };
 
 export function rootReducer(state = initState, action) {

@@ -1,4 +1,4 @@
-export function setRunGame(runGame) {
+export default function setRunGame(runGame) {
     return{
         type: 'SET_RUN_GAME',
         payload: runGame,

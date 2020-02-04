@@ -19,6 +19,7 @@ class Container extends React.Component {
             moonSpeed: 5,
         }
         this.clickStartButton = this.clickStartButton.bind(this);
+        this.clickStart = this.clickStart.bind(this);
 
 
     }
@@ -39,15 +40,17 @@ class Container extends React.Component {
                 <Earth/>
                 <Ship
                     shipSpeed = {this.state.shipSpeed}
-                    runGame = {this.state.runGame}
+                    runGame = {this.props.runGame}
                 />
                 {satellites}
                 <Moon radius={moonRadius}/>
-                <StartButton click = {this.clickStartButton}/>
+                <StartButton click = {this.clickStart}/>
             </div>
         )
     }
-
+    clickStart(){
+        this.props.setRunGame(true);
+    }
     clickStartButton(){
         this.setState(prevState =>{
             prevState.runGame = true;
@@ -88,10 +91,15 @@ class Container extends React.Component {
 
 }
 
-function mapStateToProps(state){
+const mapStateToProps = store => {
     return {
-        runGame: state.runGame,
+        runGame: store.runGame,
+    }
+}
+const mapDispatchToProps = dispatch => {
+    return {
+        setRunGame: run => dispatch(setRunGame(run)),
     }
 }
 
-export default connect(mapStateToProps)(Container);
+export default connect(mapStateToProps, mapDispatchToProps)(Container);
