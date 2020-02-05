@@ -2,9 +2,10 @@ import React from 'react';
 import icon from './sputnik.svg';
 import './satellite.css';
 import getRandom from '../../utils/getRandom';
+import getXYPosition from '../../utils/getXYPosition';
 
-class Satellite extends React.Component{
-    constructor(props){
+class Satellite extends React.Component {
+    constructor(props) {
         super();
 
         //направление вращения случайным образом
@@ -16,6 +17,7 @@ class Satellite extends React.Component{
         //скорость случайным образом
         const speed = getRandom(10, 20);
 
+
         this.state = {
             radius: props.radius,
             speed: speed,
@@ -24,46 +26,46 @@ class Satellite extends React.Component{
         };
 
         setInterval(() => {
-            this.setState(prevState => {
-                prevState.angle += 0.5;
-                return prevState;
-            })
+            if (this.state.clockwise === true){
+                this.setState(prevState => {
+                    prevState.angle += 0.5;
+                    return prevState;
+                })
+            } else {
+                this.setState(prevState => {
+                    prevState.angle -= 0.5;
+                    return prevState;
+                })
+            }
+
         }, this.state.speed);
     }
 
-    render(){
+    render() {
         //вычисления центра вращения
         const verticalCenter = document.documentElement.clientHeight / 2 - 21;
         const gorisontalCenter = document.documentElement.clientWidth / 2 - 15;
 
-        //вычисление координат X и Y
-        const angle = this.state.angle * 2 * Math.PI/180;
-        const positionX = gorisontalCenter + this.state.radius*Math.cos(angle);
-        let positionY;
-        if (this.state.clockwise === true) {
-            positionY = verticalCenter + this.state.radius*Math.sin(angle);
-        } else {
-            positionY = verticalCenter + this.state.radius*(-Math.sin(angle));
-        }
+        const XYPosition = getXYPosition(this.state.angle, this.state.radius, gorisontalCenter, verticalCenter);
 
         //поворот вокруг своей оси
-        const rotateSelf = (this.state.clockwise === true) ? this.state.angle : -this.state.angle;
+        const rotateSelf = this.state.angle;
 
         //ширина и высота дива для орбиты
         const heightWidth = this.props.radius * 2;
 
-        return(
+        return (
             <div>
                 <div className='satellite detectCollapse' style={{
-                    left: positionX,
-                    top: positionY,
+                    left: XYPosition.XPosition,
+                    top: XYPosition.YPosition,
                 }}>
-                    <img src={icon} alt="" style = {{transform: `rotate(${rotateSelf}deg)`}}/>
+                    <img src={icon} alt="" style={{transform: `rotate(${rotateSelf}deg)`}}/>
                 </div>
-                    <div className="orbitSatellite" style={{
-                        width: heightWidth,
-                        height: heightWidth
-                    }}></div>
+                <div className="orbitSatellite" style={{
+                    width: heightWidth,
+                    height: heightWidth
+                }}></div>
             </div>
 
         );
