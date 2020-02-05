@@ -1,0 +1,47 @@
+.speedRange{
+    width: 250px;
+    padding: 30px 0;
+}
+.speedRange input{
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: block;
+    background-color: #6288ce;
+    width: 80%;
+    height: 6px;
+    margin: 0 auto 30px auto;
+    border-radius: 2px;
+    outline: none;
+    opacity: 0.7;
+    transition: opacity 0.5s;
+}
+.speedRange input:hover{
+    opacity: 1;
+}
+
+.speedRange input::-webkit-slider-thumb{
+    -webkit-appearance: none;
+    appearance: none;
+    background: #22881b;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+}
+.speedRange input::-moz-range-thumb{
+    -moz-appearance: none;
+    appearance: none;
+    background: #22881b;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    border: none;
+}
+.speedRange p{
+    color: #fff;
+    text-align: center;
+    padding-bottom: 15px;
+}
+.speedRange p:first-child{
+    font-weight: bold;
+}

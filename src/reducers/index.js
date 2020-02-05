@@ -10,9 +10,10 @@ function getInitState() {
     };
     for (let count = 1; count <= initState.satelliteCounter; count++){
         const name = `satellite${count}`;
-        initState.satelliteSpeed[name]=getRandom(20,120)/100;
+
+        //начальная угловая скорость спутников случайным образом от 0,5 до 1,3 градусов
+        initState.satelliteSpeed[name]=getRandom(50,130)/100;
     }
-    console.log(initState);
      return initState;
 }
 
@@ -22,7 +23,6 @@ export function rootReducer(state = initState, action) {
             return {...state, runGame: action.payload};
         case 'CHANGE_SPEED':
             return {...state, satelliteSpeed: action.payload};
-            //return {...state, satelliteSpeed:{satellite1: action.payload}};
         default:
             return state;
     }

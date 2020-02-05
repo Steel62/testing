@@ -12,7 +12,6 @@ import getRandom from '../../utils/getRandom';
 import makeCounter from '../../utils/makeCounter'
 import getXYPosition from '../../utils/getXYPosition';
 import SpeedRange from '../SpeedRange/SpeedRange';
-//import mapStateToProps from "react-redux/es/connect/mapStateToProps";
 
 class Container extends React.Component {
     constructor() {
@@ -49,9 +48,6 @@ class Container extends React.Component {
             } else {
                 this.state.satellitesProps[key].radius = 150 + 50 * (satelliteNumber - 1);
             }
-
-            //скорость вращения спутников случайным образом (изменение угла в единицу времени
-            this.state.satellitesProps[key].speed = getRandom(50, 120)/100;
         }
 
         //запускаем спутники
@@ -59,18 +55,18 @@ class Container extends React.Component {
             for (let key in this.state.satellitesProps){
                 this.setState((prevState =>{
                     if (this.state.satellitesProps[key].clockwise === true) {
-                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle + prevState.satellitesProps[key].speed;
+                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle + this.props.satelliteSpeed[key];
                     } else {
-                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle - prevState.satellitesProps[key].speed;
+                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle - this.props.satelliteSpeed[key];
                     }
                     return prevState;
                 }))
             }
-        },35);
+        },40);
 
+        //биндим обрабртчики событий
         this.clickStartButton = this.clickStartButton.bind(this);
         this.changeSpeed = this.changeSpeed.bind(this);
-
 
     }
     render() {
@@ -123,21 +119,19 @@ class Container extends React.Component {
         const satelliteSpeed = this.props.satelliteSpeed;
         switch (event.target.id) {
             case 'satellite1':
-                satelliteSpeed.satellite1 = event.target.value;
+                satelliteSpeed.satellite1 = Number(event.target.value);
                 break;
             case 'satellite2':
-                satelliteSpeed.satellite2 = event.target.value;
+                satelliteSpeed.satellite2 = Number(event.target.value);
                 break;
             case 'satellite3':
-                satelliteSpeed.satellite3 = event.target.value;
+                satelliteSpeed.satellite3 = Number(event.target.value);
                 break;
             case 'satellite4':
-                satelliteSpeed.satellite4 = event.target.value;
+                satelliteSpeed.satellite4 = Number(event.target.value);
                 break;
         }
-        console.log(satelliteSpeed);
     }
-
 
     clickStartButton(){
         this.props.setRunGame(true);
