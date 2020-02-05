@@ -7,9 +7,11 @@ import StartButton from "../StartButton/StartButton";
 import Moon from '../Moon/Moon';
 import {connect} from "react-redux";
 import setRunGame from '../../actions/RunGame';
+import changeSpeedRange from '../../actions/changeSpeedRange';
 import getRandom from '../../utils/getRandom';
 import makeCounter from '../../utils/makeCounter'
 import getXYPosition from '../../utils/getXYPosition';
+import SpeedRange from '../SpeedRange/SpeedRange';
 //import mapStateToProps from "react-redux/es/connect/mapStateToProps";
 
 class Container extends React.Component {
@@ -67,6 +69,7 @@ class Container extends React.Component {
         },35);
 
         this.clickStartButton = this.clickStartButton.bind(this);
+        this.changeSpeed = this.changeSpeed.bind(this);
 
 
     }
@@ -103,6 +106,7 @@ class Container extends React.Component {
 
         return (
             <div className="container">
+                <SpeedRange values={this.props.satelliteSpeed} onChange={this.changeSpeed}/>
                 <Earth/>
                 <Ship
                     shipSpeed = {this.state.shipSpeed}
@@ -115,6 +119,24 @@ class Container extends React.Component {
         )
     }
 
+    changeSpeed(event){
+        const satelliteSpeed = this.props.satelliteSpeed;
+        switch (event.target.id) {
+            case 'satellite1':
+                satelliteSpeed.satellite1 = event.target.value;
+                break;
+            case 'satellite2':
+                satelliteSpeed.satellite2 = event.target.value;
+                break;
+            case 'satellite3':
+                satelliteSpeed.satellite3 = event.target.value;
+                break;
+            case 'satellite4':
+                satelliteSpeed.satellite4 = event.target.value;
+                break;
+        }
+        console.log(satelliteSpeed);
+    }
 
 
     clickStartButton(){
@@ -157,11 +179,14 @@ class Container extends React.Component {
 const mapStateToProps = store => {
     return {
         runGame: store.runGame,
+        satelliteSpeed: store.satelliteSpeed,
+        satelliteCounter: store.satelliteCounter,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         setRunGame: run => dispatch(setRunGame(run)),
+        changeSpeedRange: speed => dispatch(changeSpeedRange(speed)),
     }
 }
 
