@@ -67,25 +67,22 @@ class Container extends React.Component {
 
         //запускаем спутники и Луну
         setInterval(() => {
-            for (let key in this.state.satellitesProps){
-                this.setState((prevState =>{
-                    if (this.state.satellitesProps[key].clockwise === true) {
-                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle + this.props.satelliteSpeed[key];
-                    } else {
-                        prevState.satellitesProps[key].angle = prevState.satellitesProps[key].angle - this.props.satelliteSpeed[key];
-                    }
-                    return prevState;
-                }))
-            }
-            this.setState(prevState =>{
-                if (prevState.moonProps.clockwise === true){
-                    prevState.moonProps.angle += prevState.moonProps.speed;
-                } else {
-                    prevState.moonProps.angle -= prevState.moonProps.speed;
-                }
+            const obj= Object.assign({},this.state);
 
-                return prevState;
-            })
+            for (let key in this.state.satellitesProps){
+                if (this.state.satellitesProps[key].clockwise === true) {
+                    obj.satellitesProps[key].angle = this.state.satellitesProps[key].angle + this.props.satelliteSpeed[key];
+                } else {
+                    obj.satellitesProps[key].angle = this.state.satellitesProps[key].angle - this.props.satelliteSpeed[key];
+                }
+            }
+
+            if (this.state.moonProps.clockwise === true){
+                obj.moonProps.angle = this.state.moonProps.angle + this.state.moonProps.speed;
+            } else {
+                obj.moonProps.angle = this.state.moonProps.angle - this.state.moonProps.speed;
+            }
+            this.setState(obj);
         },40);
 
         //биндим обрабртчики событий
