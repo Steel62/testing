@@ -10,6 +10,7 @@ function Moon(props){
             <div className='moon detectCollapse' style={{
                 left: props.left,
                 top: props.top,
+                transform: `rotate(${props.angle}deg)`,
             }}>
                 <img src={icon} alt=""/>
             </div>

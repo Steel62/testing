@@ -134,7 +134,8 @@ class Container extends React.Component {
                     runGame = {this.props.runGame}
                 />
                 {satellites}
-                <Moon radius={this.state.moonProps.radius} top={moonPositionXY.YPosition} left={moonPositionXY.XPosition}/>
+                <Moon radius={this.state.moonProps.radius} top={moonPositionXY.YPosition} left={moonPositionXY.XPosition}
+                angle={this.state.moonProps.angle}/>
                 <StartButton click = {this.clickStartButton}/>
             </div>
         )

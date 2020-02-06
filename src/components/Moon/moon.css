@@ -4,7 +4,6 @@
 }
 .moon img{
     width: 50px;
-    animation: rotateMoon 6s linear infinite;
 }
 .orbitMoon{
     position: absolute;
@@ -15,9 +14,4 @@
     border: 1px #6f8bce dashed;
     z-index: 1;
     opacity: 0.5;
-}
-
-@keyframes rotateMoon {
-    from {transform: rotate(0deg)}
-    to {transform: rotate(360deg)}
 }
