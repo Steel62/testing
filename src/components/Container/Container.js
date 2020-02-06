@@ -14,13 +14,14 @@ import getXYPosition from '../../utils/getXYPosition';
 import SpeedRange from '../SpeedRange/SpeedRange';
 
 class Container extends React.Component {
-    constructor() {
+    constructor(props) {
         super();
         this.state = {
             satelliteCounter: 4,
             shipSpeed: 3,
             moonSpeed: 5,
             satellitesProps: {},
+            moonProps: {},
         };
         //создаем в state.satelliteProps пустые объекты satellite[satelliteCounter]
         for (let count =1; count <= this.state.satelliteCounter; count++){
@@ -48,9 +49,23 @@ class Container extends React.Component {
             } else {
                 this.state.satellitesProps[key].radius = 150 + 50 * (satelliteNumber - 1);
             }
+
+            //наполняем свойствами объект Moon
+            //направление вращения случайным образом
+            this.state.moonProps.clockwise = Math.random() > 0.5 ? true : false;
+
+            //начальный угол случайным образом
+            this.state.moonProps.angle = getRandom(0, 360);
+
+            //скорость случайным образом
+            this.state.moonProps.speed = getRandom(30, 50)/100;
+
+            //радиус вращения
+            this.state.moonProps.radius = 150 +50 * props.satelliteCounter;
+
         }
 
-        //запускаем спутники
+        //запускаем спутники и Луну
         setInterval(() => {
             for (let key in this.state.satellitesProps){
                 this.setState((prevState =>{
@@ -62,6 +77,15 @@ class Container extends React.Component {
                     return prevState;
                 }))
             }
+            this.setState(prevState =>{
+                if (prevState.moonProps.clockwise === true){
+                    prevState.moonProps.angle += prevState.moonProps.speed;
+                } else {
+                    prevState.moonProps.angle -= prevState.moonProps.speed;
+                }
+
+                return prevState;
+            })
         },40);
 
         //биндим обрабртчики событий
@@ -96,8 +120,9 @@ class Container extends React.Component {
                               rotateSelf={satellite.rotateSelf} key={satellite.radius}/>);
         });
 
-        //вычисление радиуса орбиты луны
-        const moonRadius = 140 + (this.state.satelliteCounter) * 50;
+        //вычисление координат для луны
+        const moonPositionXY = getXYPosition(this.state.moonProps.angle, this.state.moonProps.radius,
+            document.documentElement.clientWidth / 2 - 25, document.documentElement.clientHeight / 2 - 26);
 
 
         return (
@@ -109,7 +134,7 @@ class Container extends React.Component {
                     runGame = {this.props.runGame}
                 />
                 {satellites}
-                <Moon radius={moonRadius}/>
+                <Moon radius={this.state.moonProps.radius} top={moonPositionXY.YPosition} left={moonPositionXY.XPosition}/>
                 <StartButton click = {this.clickStartButton}/>
             </div>
         )
@@ -166,8 +191,6 @@ class Container extends React.Component {
             }
         },50);
     };
-
-
 }
 
 const mapStateToProps = store => {
