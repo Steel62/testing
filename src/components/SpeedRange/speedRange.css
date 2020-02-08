@@ -40,8 +40,11 @@
 .speedRange p{
     color: #fff;
     text-align: center;
-    padding-bottom: 15px;
+    padding-bottom: 8px;
 }
-.speedRange p:first-child{
+.speedRange>p{
     font-weight: bold;
+}
+.speedRange>div>p{
+    font-size: 12px;
 }
