@@ -1,6 +1,6 @@
-export default function changeSpeedRange(newSpeed) {
+export default function changeSpeedRange(newSatellitesProps) {
     return{
         type: 'CHANGE_SPEED',
-        payload: newSpeed,
+        payload: newSatellitesProps,
     }
 }

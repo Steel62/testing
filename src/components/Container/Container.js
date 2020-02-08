@@ -8,82 +8,37 @@ import Moon from '../Moon/Moon';
 import {connect} from "react-redux";
 import setRunGame from '../../actions/RunGame';
 import changeSpeedRange from '../../actions/changeSpeedRange';
-import getRandom from '../../utils/getRandom';
-import makeCounter from '../../utils/makeCounter'
+import mooveSatellites from '../../actions/MooveSatellites';
+import mooveMoon from '../../actions/MooveMoon';
 import getXYPosition from '../../utils/getXYPosition';
 import SpeedRange from '../SpeedRange/SpeedRange';
 
 class Container extends React.Component {
     constructor(props) {
         super();
-        this.state = {
-            satelliteCounter: 4,
-            shipSpeed: 3,
-            moonSpeed: 5,
-            satellitesProps: {},
-            moonProps: {},
-        };
-        //создаем в state.satelliteProps пустые объекты satellite[satelliteCounter]
-        for (let count =1; count <= this.state.satelliteCounter; count++){
-            const name = `satellite${count}`;
-            this.state.satellitesProps[name] = {};
-        }
-
-        //наполняем свойствами state.satelliteProps.satellite[satelliteCounter]
-        let satelliteCounter = makeCounter();
-        satelliteCounter();
-        for (let key in this.state.satellitesProps){
-
-            //направление вращения случайным образом
-            const clockwise = Math.random() > 0.5 ? true : false;
-            this.state.satellitesProps[key].clockwise = clockwise;
-
-            //начальный угол случайным образом
-            const angle = getRandom(0, 360);
-            this.state.satellitesProps[key].angle = angle;
-
-            //формируем радиусы вращения спутников
-            const satelliteNumber = satelliteCounter();
-            if (satelliteNumber === 1){
-                this.state.satellitesProps[key].radius = 150;
-            } else {
-                this.state.satellitesProps[key].radius = 150 + 50 * (satelliteNumber - 1);
-            }
-
-            //наполняем свойствами объект Moon
-            //направление вращения случайным образом
-            this.state.moonProps.clockwise = Math.random() > 0.5 ? true : false;
-
-            //начальный угол случайным образом
-            this.state.moonProps.angle = getRandom(0, 360);
-
-            //скорость случайным образом
-            this.state.moonProps.speed = getRandom(30, 50)/100;
-
-            //радиус вращения
-            this.state.moonProps.radius = 150 +50 * props.satelliteCounter;
-
-        }
 
         //запускаем спутники и Луну
-        setInterval(() => {
-            const obj= Object.assign({},this.state);
-
-            for (let key in this.state.satellitesProps){
-                if (this.state.satellitesProps[key].clockwise === true) {
-                    obj.satellitesProps[key].angle = this.state.satellitesProps[key].angle + this.props.satelliteSpeed[key];
+        setInterval(() =>{
+            const newSatellitesProps = Object.assign({}, props.store.satellitesProps);
+            for (let key in newSatellitesProps){
+                if (newSatellitesProps[key].clockwise === true) {
+                    newSatellitesProps[key].angle += newSatellitesProps[key].speed;
                 } else {
-                    obj.satellitesProps[key].angle = this.state.satellitesProps[key].angle - this.props.satelliteSpeed[key];
+                    newSatellitesProps[key].angle -= newSatellitesProps[key].speed;
                 }
             }
-
-            if (this.state.moonProps.clockwise === true){
-                obj.moonProps.angle = this.state.moonProps.angle + this.state.moonProps.speed;
+            let newAngleMoon;
+            if (props.store.moonProps.clockwise){
+                newAngleMoon = props.store.moonProps.angle + props.store.moonProps.speed;
             } else {
-                obj.moonProps.angle = this.state.moonProps.angle - this.state.moonProps.speed;
+                newAngleMoon = props.store.moonProps.angle - props.store.moonProps.speed;
+
             }
-            this.setState(obj);
-        },40);
+
+            this.props.mooveSatellites(newSatellitesProps);
+            this.props.mooveMoon(newAngleMoon);
+
+        }, 40);
 
         //биндим обрабртчики событий
         this.clickStartButton = this.clickStartButton.bind(this);
@@ -99,8 +54,8 @@ class Container extends React.Component {
 
             //перегоняем свойства спутников из стейта в массив
         let arrSatellites = [];
-        for (let key in this.state.satellitesProps){
-            arrSatellites.push(this.state.satellitesProps[key]);
+        for (let key in this.props.store.satellitesProps){
+            arrSatellites.push(this.props.store.satellitesProps[key]);
         }
             //готовим массив с параметрами к рендерингу
         let satellites = arrSatellites.map(satellite =>{
@@ -118,42 +73,31 @@ class Container extends React.Component {
         });
 
         //вычисление координат для луны
-        const moonPositionXY = getXYPosition(this.state.moonProps.angle, this.state.moonProps.radius,
+        const moonPositionXY = getXYPosition(this.props.store.moonProps.angle, this.props.store.moonProps.radius,
             document.documentElement.clientWidth / 2 - 25, document.documentElement.clientHeight / 2 - 26);
 
 
         return (
             <div className="container">
-                <SpeedRange values={this.props.satelliteSpeed} onChange={this.changeSpeed}/>
+                <SpeedRange
+                    values={this.props.store.satellitesProps}
+                    onChange={this.changeSpeed}/>
                 <Earth/>
                 <Ship
-                    shipSpeed = {this.state.shipSpeed}
-                    runGame = {this.props.runGame}
+                    shipSpeed = {this.props.store.shipSpeed}
+                    runGame = {this.props.store.runGame}
                 />
                 {satellites}
-                <Moon radius={this.state.moonProps.radius} top={moonPositionXY.YPosition} left={moonPositionXY.XPosition}
-                angle={this.state.moonProps.angle}/>
+                <Moon radius={this.props.store.moonProps.radius} top={moonPositionXY.YPosition} left={moonPositionXY.XPosition}
+                angle={this.props.store.moonProps.angle}/>
                 <StartButton click = {this.clickStartButton}/>
             </div>
         )
     }
-
     changeSpeed(event){
-        const satelliteSpeed = this.props.satelliteSpeed;
-        switch (event.target.id) {
-            case 'satellite1':
-                satelliteSpeed.satellite1 = Number(event.target.value);
-                break;
-            case 'satellite2':
-                satelliteSpeed.satellite2 = Number(event.target.value);
-                break;
-            case 'satellite3':
-                satelliteSpeed.satellite3 = Number(event.target.value);
-                break;
-            case 'satellite4':
-                satelliteSpeed.satellite4 = Number(event.target.value);
-                break;
-        }
+        const newSatelliteSpeed = Object.assign({}, this.props.store.satellitesProps);
+        newSatelliteSpeed[event.target.id].speed = Number(event.target.value);
+        this.props.changeSpeedRange(newSatelliteSpeed);
     }
 
     clickStartButton(){
@@ -193,15 +137,15 @@ class Container extends React.Component {
 
 const mapStateToProps = store => {
     return {
-        runGame: store.runGame,
-        satelliteSpeed: store.satelliteSpeed,
-        satelliteCounter: store.satelliteCounter,
+        store: store,
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
         setRunGame: run => dispatch(setRunGame(run)),
-        changeSpeedRange: speed => dispatch(changeSpeedRange(speed)),
+        changeSpeedRange: newSatellitesProps => dispatch(changeSpeedRange(newSatellitesProps)),
+        mooveSatellites: satellitesProps => dispatch(mooveSatellites(satellitesProps)),
+        mooveMoon: moonAngle => dispatch(mooveMoon(moonAngle)),
     }
 }
 
